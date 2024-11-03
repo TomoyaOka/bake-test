@@ -1,0 +1,123 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+//ページ詳細
+const pageTitle = "Baked Model";
+---
+
+<Layout title={pageTitle}>
+  <main id="main" class="l-main">
+    <div id="canvas"></div>
+
+    {/* loading */}
+    <div class="c-loading u-en">
+      <p>Loading...</p>
+    </div>
+    {/*  */}
+    {/* interface */}
+    <div class="box">
+      <small class="copy">@tmy. personal-project</small>
+    </div>
+    {/* */}
+  </main>
+</Layout>
+
+<script>
+  import Lenis from "@studio-freight/lenis";
+  import Stage from "../script/modules/stage.js";
+  import Model from "../script/modules/mesh.js";
+
+  let stage: any;
+  let mesh: any;
+  let lenis: any;
+  let loading: any;
+
+  function hideLoading() {
+    loading = document.querySelector(".c-loading");
+    loading.classList.add("is-hide");
+  }
+
+  const LenisInit = () => {
+    let options = {
+      wheelMultiplier: 0.5,
+      duration: 2.0,
+      lerp: 0.05,
+      smoothTouch: true,
+    };
+    lenis = new Lenis(options);
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+
+    requestAnimationFrame(raf);
+  };
+
+  function rendering() {
+    stage = new Stage();
+    mesh = new Model(stage);
+
+    mesh.getModel().then((val) => {
+    stage._init();
+    mesh._init(val);
+    setTimeout(() => {
+      hideLoading(); //ローディング解除
+    }, 1000);
+    window.addEventListener("resize", () => {
+      stage.onResize();
+      mesh.onResize();
+    });
+
+    const loop = () => {
+      requestAnimationFrame(loop);
+      stage.onLoop();
+      mesh.onUpdata();
+    };
+    loop();
+  })
+  }
+  window.addEventListener("DOMContentLoaded", () => {
+    LenisInit();
+    rendering();
+    lenis.stop();
+  });
+</script>
+
+<style lang="scss">
+  @import "../styles/setting.scss";
+
+  .l-main {
+    width: 100%;
+    height: 100svh;
+    overflow: hidden;
+    background: #b4b9be;
+  }
+
+  #canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+  }
+
+
+  .box {
+    width: 100%;
+    height: 100vh;
+    height: 100svh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    pointer-events: none;
+  }
+
+  .copy {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    font-size: 12px;
+    color: #eee;
+  }
+</style>

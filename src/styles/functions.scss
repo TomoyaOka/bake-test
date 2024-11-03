@@ -1,0 +1,93 @@
+@import "./setting.scss";
+@import url("https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap");
+/*----------------------
+  初期設定
+-------------------------*/
+html {
+  font-size: calc(10 / 1440 * 100vw);
+  min-height: 100vh;
+  min-height: calc(var(--vh, 1vh) * 100);
+  overflow-x: clip;
+
+  @include mq(xl) {
+    font-size: calc(10 / 1440 * 100vw);
+  }
+  @include mq(md) {
+    font-size: 62.5%;
+  }
+  @include mq(sm) {
+    font-size: 58%;
+  }
+}
+
+body {
+  width: 100%;
+  max-width: 2700px;
+  min-height: 100vh;
+  min-height: calc(var(--vh, 1vh) * 100);
+  min-height: 100svh;
+  // background-color: var(--bg-color);
+  background: #ccc;
+  font-feature-settings: "palt";
+  font-size: var(--sm);
+  font-weight: 500;
+  color: #3b3b3b;
+  position: relative;
+  overscroll-behavior: none;
+  margin: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  overflow: clip;
+  @include mq(md) {
+    overflow-x: clip;
+  }
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+a {
+  cursor: pointer;
+}
+
+// ::selection {
+//   background-color: #333;
+// }
+
+#dev-overlay {
+  display: none;
+}
+
+.u-en {
+  font-family: "Work Sans", sans-serif;
+}
+
+/*-------------------------
+* c-loading
+-----------------------------*/
+
+.c-loading {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: #eee;
+  z-index: 99999;
+  opacity: 1;
+  transition: opacity 1s ease;
+
+  p {
+    font-size: 14px;
+    font-weight: 500;
+    color: #797979;
+    position: absolute;
+    bottom: 40px;
+    right: 40px;
+  }
+
+  &.is-hide {
+    opacity: 0;
+    pointer-events: none;
+  }
+}
